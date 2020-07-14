@@ -1,0 +1,19 @@
+# for local development
+version: '3'
+
+services:
+  interface:
+    container_name: youtube-dl-interface
+    build:
+      context: ./interface
+      dockerfile: Dockerfile
+    expose:
+      - 4000
+    volumes:
+      - ./interface:/usr/src/app
+    environment:
+      NODE_ENV: ${ENV}
+      VUE_APP_API_URL: http://interface.${DOMAIN}
+      VUE_APP_PLATFORM_URL: http://${DOMAIN}
+      STARTUP_COMMAND_1: yarn
+      STARTUP_COMMAND_2: yarn run serve
