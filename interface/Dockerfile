@@ -1,11 +1,6 @@
 # base image
 FROM node:12.2.0-alpine
 
-RUN apk update
-RUN apk add --update python3
-RUN python3 -m pip install --upgrade pip
-RUN pip install --upgrade youtube-dl
-
 # set working directory
 WORKDIR /app
 

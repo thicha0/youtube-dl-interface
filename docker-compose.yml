@@ -2,13 +2,33 @@ version: '3.7'
 
 services:
 
-  interface:
+#  interface:
+#    build:
+#      context: ./interface
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./interface:/app
+#    ports:
+#      - '8080:8080'
+#    environment:
+#      - CHOKIDAR_USEPOLLING=true
+
+#  server:
+#    build:
+#      context: ./server
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./server:/usr/src/app
+#    ports:
+#      - '8081:8080'
+#    restart: always
+  web:
     build:
-      context: ./interface
+      context: ./server
       dockerfile: Dockerfile
-    volumes:
-      - ./interface:/app
     ports:
-      - '8080:8080'
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - "5000:5000"
+    depends_on:
+      - redis
+  redis:
+      image: redis
