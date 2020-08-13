@@ -5,9 +5,11 @@ defaults = {
 
 import youtube_dl
 from flask import Flask, request, send_file
+from flask_cors import CORS, cross_origin
 from redis import Redis
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/youtube_dl/*": {"origins": "*"}})
 redis = Redis(host='redis', port=6379)
 
 @app.route('/')
@@ -15,7 +17,8 @@ def hello():
     redis.incr('hits')
     return 'This Compose/Flask demo has been viewed %s time(s).' % redis.get('hits')
 
-@app.route('/youtube_dl/q', methods = ['POST'])
+@app.route('/youtube_dl/q', methods = ['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def call():
     url = request.json.get("url")
     options = {
@@ -26,8 +29,8 @@ def call():
         return {"error": "No url provided"}
 
     download(url)
-    return send_file("/code/Little Wing-Rj_NUS9hwxA.webm", attachment_filename="test", as_attachment=True)
-    #return send_file("/code/Little Wing-Rj_NUS9hwxA.webm")
+    #return send_file("/code/Little Wing-Rj_NUS9hwxA.webm", attachment_filename="test", as_attachment=True)
+    return send_file("/code/Little Wing-Rj_NUS9hwxA.webm")
 
 def download(url):
     with youtube_dl.YoutubeDL() as ydl:

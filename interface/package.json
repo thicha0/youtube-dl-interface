@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "electron:serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -21,6 +21,7 @@
     "@vue/cli-plugin-router": "^4.4.6",
     "@vue/cli-plugin-vuex": "^4.4.6",
     "@vue/cli-service": "~4.4.0",
+    "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
