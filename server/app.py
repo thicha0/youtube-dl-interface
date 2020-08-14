@@ -1,12 +1,17 @@
-defaults = {
-    'FORMAT': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
-    'OUTPUT': '/youtube-dl/%(title)s.%(ext)s',
+app_defaults = {
+    'FORMAT': 'bestaudio/best',
+    'AUDIO_FORMAT': None,
+    'AUDIO_QUALITY': '192',
+    'VIDEO_FORMAT': None,
+    'OUTPUT': '/code/%(id)s.%(ext)s',
 }
 
 import youtube_dl
 from flask import Flask, request, send_file
 from flask_cors import CORS, cross_origin
 from redis import Redis
+from collections import ChainMap
+import os
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/youtube_dl/*": {"origins": "*"}})
@@ -18,24 +23,59 @@ def hello():
     return 'This Compose/Flask demo has been viewed %s time(s).' % redis.get('hits')
 
 @app.route('/youtube_dl/q', methods = ['POST', 'OPTIONS'])
-@cross_origin(supports_credentials=True, expose_headers=["Content-Disposition"])
+@cross_origin(supports_credentials=True, expose_headers=["x-filename"])
 def call():
     url = request.json.get("url")
+    format = request.json.get("format")
     options = {
-        'format': request.json.get("format")
+        'format': format
     }
 
     if not url:
         return {"error": "No url provided"}
 
-    download(url)
-    filename = "Little Wing-Rj_NUS9hwxA.webm"
+    ext = 'mp4'
+    if format == 'audio':
+        ext = 'mp3'
 
-    return send_file("/code/" + filename, attachment_filename=filename, as_attachment=True)
+    result = download(url, options)
+    filename = result['id'] + '.' + ext
 
-def download(url):
-    with youtube_dl.YoutubeDL() as ydl:
-        ydl.download([url])
+    response = send_file('/code/' + filename)
+    response.headers['x-filename'] = result['title'] + '.' + ext
+    return response
+
+def get_ydl_options(options):
+
+    format = options.get('format')
+
+    if format == 'audio':
+        return {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+            'outtmpl': app_defaults['OUTPUT'],
+            'download_archive': 'None'
+        }
+
+    #default = video format
+    return {
+        'format': 'bestvideo+bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegVideoConvertor',
+            'preferedformat': 'mp4',
+        }],
+        'outtmpl': app_defaults['OUTPUT'],
+        'download_archive': 'None'
+    }
+
+
+def download(url, request_options):
+    with youtube_dl.YoutubeDL(get_ydl_options(request_options)) as ydl:
+        return ydl.extract_info(url, download=True)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

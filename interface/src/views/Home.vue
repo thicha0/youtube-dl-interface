@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       url: '',
-      format: '',
+      format: 'video',
     }
   },
   computed: {
