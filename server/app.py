@@ -18,7 +18,7 @@ def hello():
     return 'This Compose/Flask demo has been viewed %s time(s).' % redis.get('hits')
 
 @app.route('/youtube_dl/q', methods = ['POST', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=True, expose_headers=["Content-Disposition"])
 def call():
     url = request.json.get("url")
     options = {
@@ -29,8 +29,9 @@ def call():
         return {"error": "No url provided"}
 
     download(url)
-    #return send_file("/code/Little Wing-Rj_NUS9hwxA.webm", attachment_filename="test", as_attachment=True)
-    return send_file("/code/Little Wing-Rj_NUS9hwxA.webm")
+    filename = "Little Wing-Rj_NUS9hwxA.webm"
+
+    return send_file("/code/" + filename, attachment_filename=filename, as_attachment=True)
 
 def download(url):
     with youtube_dl.YoutubeDL() as ydl:

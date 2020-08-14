@@ -5,18 +5,25 @@ export const downloadUrl = async (
     { url, format }
 ) => {
     commit('downloadLoading')
-    try {
-        const response = await api.post(
-            '/youtube_dl/q',
-            {
-                "url": url,
-                "format": format,
-            }
-        )
+
+    api({
+        method: 'post',
+        url: '/youtube_dl/q',
+        data: {
+            "url": url,
+            "format": format,
+        },
+        responseType: 'blob'
+    }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        const filename = response.headers['content-disposition'].match(/"([^"]+)"/)[1]
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
         commit('downloadSuccess', response.data.data)
-    } catch (e) {
-        commit('downloadError', e.response.data)
-    }
+    })
 }
 
 export default {
