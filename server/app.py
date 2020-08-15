@@ -38,10 +38,18 @@ def call():
     if format == 'audio':
         ext = 'mp3'
 
-    result = download(url, options)
+    try:
+        result = download(url, options)
+    except:
+         return {"error": "An error has occurred during the download"}, 500
+
     filename = result['id'] + '.' + ext
 
-    response = send_file('/code/' + filename)
+    try:
+        response = send_file('/code/' + filename)
+    except:
+        return {"error": "An error has occurred during the sending of the file"}, 500
+
     response.headers['x-filename'] = result['title'] + '.' + ext
     return response
 

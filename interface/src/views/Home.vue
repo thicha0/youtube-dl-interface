@@ -2,7 +2,23 @@
   <div class="home">
     <h1 class="title">Download Youtube Video</h1>
     <el-input class="input" placeholder="https://www.youtube.com/watch?v=1234567890a" v-model="url" />
-    <el-button plain class="button" type="primary" @click="submit">Download <i class="el-icon-download el-icon-right"></i></el-button>
+    <el-select v-model="format">
+      <el-option
+        v-for="item in formatOptions"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
+
+    <el-button
+            v-loading="downloadLoading"
+            plain class="button"
+            type="primary"
+            @click="submit"
+    >
+      Download <i class="el-icon-download el-icon-right"></i>
+    </el-button>
   </div>
 </template>
 
@@ -19,6 +35,13 @@ export default {
     return {
       url: '',
       format: 'video',
+      formatOptions: [{
+        value: 'video',
+        label: 'Video'
+      }, {
+        value: 'audio',
+        label: 'Audio'
+      }],
     }
   },
   computed: {
@@ -59,6 +82,7 @@ export default {
 
   .input {
     margin: 1%;
+    max-width: 50%;
   }
 
   .button {
