@@ -55,10 +55,10 @@ export default {
   methods: {
     ...mapActions('youtube_dl', ['downloadUrl']),
     submit() {
-      if(!this.url.startsWith('https://www.youtube.com/watch?v=')) {
-        alert('NOPE')
-        return
-      }
+      // if(!this.url.startsWith('https://www.youtube.com/watch?v=')) {
+      //   alert('NOPE')
+      //   return
+      // }
       this.downloadUrl({
         url: this.url,
         format: this.format,

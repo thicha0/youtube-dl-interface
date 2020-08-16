@@ -12,6 +12,7 @@ from flask_cors import CORS, cross_origin
 from redis import Redis
 from collections import ChainMap
 import os
+from zipfile import ZipFile
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/youtube_dl/*": {"origins": "*"}})
@@ -43,14 +44,29 @@ def call():
     except:
          return {"error": "An error has occurred during the download"}, 500
 
-    filename = result['id'] + '.' + ext
+    title = result['title']
+    id = result['id']
+    type = result.get('_type', 'video')
+
+    if type == 'playlist':
+        file_paths = []
+        for entry in result['entries']:
+            file_paths.append(entry['id'] + '.' + ext)
+
+        with ZipFile(id + '.zip','w') as zip:
+            for file in file_paths:
+                zip.write(file)
+
+        ext = 'zip'
+
+    filename = id + '.' + ext
 
     try:
         response = send_file('/code/' + filename)
     except:
         return {"error": "An error has occurred during the sending of the file"}, 500
 
-    response.headers['x-filename'] = result['title'] + '.' + ext
+    response.headers['x-filename'] = title + '.' + ext
     return response
 
 def get_ydl_options(options):
@@ -66,7 +82,7 @@ def get_ydl_options(options):
                 'preferredquality': '192',
             }],
             'outtmpl': app_defaults['OUTPUT'],
-            'download_archive': 'None'
+            'noplaylist' : True,
         }
 
     #default = video format
@@ -77,7 +93,7 @@ def get_ydl_options(options):
             'preferedformat': 'mp4',
         }],
         'outtmpl': app_defaults['OUTPUT'],
-        'download_archive': 'None'
+        'noplaylist' : True,
     }
 
 
