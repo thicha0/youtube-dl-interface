@@ -1,47 +1,50 @@
 <template>
   <div class="home">
-    <h1 class="title">Download Youtube Video</h1>
-    <el-input class="input" placeholder="https://www.youtube.com/watch?v=1234567890a" v-model="url" />
-    <el-select v-model="format">
-      <el-option
-        v-for="item in formatOptions"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
+    <img class="logo" alt="logo" src="../assets/logo.png">
+    <h1 class="title">Download Youtube Videos</h1>
+    <el-input
+            class="input"
+            placeholder="https://www.youtube.com/watch?v=1234567890a"
+            v-model="url"
+            :error="downloadError"
+    />
+
+    <el-switch
+        class="switch"
+        v-model="format"
+        active-text="Audio"
+        inactive-text="Video"
+        active-value="audio"
+        inactive-value="video"
+        active-color="red"
+        inactive-color="red"
+        font-size="50px"
+    />
 
     <el-button
-            v-loading="downloadLoading"
-            plain class="button"
-            type="primary"
-            @click="submit"
+        v-loading="downloadLoading"
+        class="button"
+        @click="submit"
     >
-      Download <i class="el-icon-download el-icon-right"></i>
+      Download <i class="el-icon-download"></i>
     </el-button>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { Input, Button } from 'element-ui'
+import { Input, Button, Switch } from 'element-ui'
 import Vue from 'vue'
 
 Vue.use(Input)
 Vue.use(Button)
+Vue.use(Switch)
 export default {
   name: 'Home',
   data() {
     return {
       url: '',
       format: 'video',
-      formatOptions: [{
-        value: 'video',
-        label: 'Video'
-      }, {
-        value: 'audio',
-        label: 'Audio'
-      }],
     }
   },
   computed: {
@@ -55,10 +58,7 @@ export default {
   methods: {
     ...mapActions('youtube_dl', ['downloadUrl']),
     submit() {
-      // if(!this.url.startsWith('https://www.youtube.com/watch?v=')) {
-      //   alert('NOPE')
-      //   return
-      // }
+      if (this.downloadLoading) return
       this.downloadUrl({
         url: this.url,
         format: this.format,
@@ -67,25 +67,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .home {
-    background-color: powderblue;
-    justify-content: space-between;
-    padding: 3%;
-    text-align: center;
-  }
-
-  .title {
-    font-family: "Segoe UI", sans-serif;
-  }
-
-  .input {
-    margin: 1%;
-    max-width: 50%;
-  }
-
-  .button {
-
-  }
-</style>

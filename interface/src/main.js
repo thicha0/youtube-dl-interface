@@ -10,6 +10,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(ElementUI);
 
+// Global style
+import '@/assets/styles/style.scss'
+
+
 new Vue({
   router,
   store,

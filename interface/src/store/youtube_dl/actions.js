@@ -23,7 +23,9 @@ export const downloadUrl = async (
         document.body.appendChild(link);
         link.click();
         commit('downloadSuccess', response.data.data)
-    })
+    }).catch((error) => {
+        commit('downloadError', error.data)
+    });
 }
 
 export default {

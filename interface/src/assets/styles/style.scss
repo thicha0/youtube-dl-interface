@@ -1,0 +1,69 @@
+@import "~element-ui/packages/theme-chalk/src/switch";
+@import "~element-ui/packages/theme-chalk/src/button";
+@import 'colors';
+
+body {
+  background-color: $background-color;
+}
+
+.home {
+  width: auto;
+  justify-content: space-between;
+  padding: 3%;
+  text-align: center;
+  border: 8px solid $dark-color;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 200px;
+}
+
+.title {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.input {
+  margin: 1%;
+  max-width: 50%;
+  font-size: 1.5rem;
+}
+
+.switch {
+  font-size: 10rem;
+  font-family: "Segoe UI", sans-serif;
+  color: $primary-color;
+  margin: 1%;
+}
+
+.el-switch__label {
+  @include when(active) {
+    color: $primary-color;
+    font-weight: bold;
+  }
+  color: $dark-color;
+  & span {
+    font-size: 1.5rem;
+  }
+}
+
+.button {
+  margin: 1%;
+  font-size: 1.5rem;
+  color: $light-color;
+  background-color: $primary-color;
+  font-weight: bold;
+  border-radius: 15px;
+}
+
+.el-button {
+  &:hover,
+  &:focus {
+    color: $light-color;
+    background-color: $primary-color;
+    border-color: $dark-color;
+  }
+}

@@ -13,6 +13,7 @@ from redis import Redis
 from collections import ChainMap
 import os
 from zipfile import ZipFile
+from flask import abort
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/youtube_dl/*": {"origins": "*"}})
@@ -33,7 +34,7 @@ def call():
     }
 
     if not url:
-        return {"error": "No url provided"}
+        return {"error": "No url provided"}, 400
 
     ext = 'mp4'
     if format == 'audio':
