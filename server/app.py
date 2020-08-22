@@ -1,5 +1,5 @@
 app_defaults = {
-    'OUTPUT': '/code/%(id)s.%(ext)s',
+    'OUTPUT': '/code/%(title)s %(id)s.%(ext)s',
     'VIDEO_QUALITY': 480,
 }
 
@@ -34,25 +34,30 @@ def call():
 
     try:
         result = download(url, options)
-    except:
-         return {"error": "An error has occurred during the download"}, 500
+    except Exception as e:
+        print(e, flush=True)
+        return {"error": "An error has occurred during the download"}, 500
 
     title = result['title']
     id = result['id']
     type = result.get('_type', 'video')
+    filename = title + ' ' + id
 
     if type == 'playlist':
-        zipFiles(result['entries'], id)
-        ext = 'zip'
-
-    filename = id + '.' + ext
+        try:
+            zipEntries(result['entries'], filename, ext)
+            ext = 'zip'
+        except Exception as e:
+            print(e, flush=True)
+            return {"error": "An error has occurred during the zipping"}, 500
 
     try:
-        response = send_file('/code/' + filename)
-    except:
+        response = send_file('/code/' + filename + '.' + ext)
+    except Exception as e:
+        print(e, flush=True)
         return {"error": "An error has occurred during the sending of the file"}, 500
 
-    response.headers['x-filename'] = title + '.' + ext
+    response.headers['x-filename'] = (filename + '.' + ext).encode(encoding='UTF-8', errors='ignore')
     return response
 
 def get_ydl_options(options):
@@ -68,6 +73,7 @@ def get_ydl_options(options):
             }],
             'outtmpl': app_defaults['OUTPUT'],
             'noplaylist' : True,
+            'encoding' : 'utf-8',
         }
 
     #default = video format
@@ -79,16 +85,17 @@ def get_ydl_options(options):
         }],
         'outtmpl': app_defaults['OUTPUT'],
         'noplaylist' : True,
+        'encoding' : 'utf-8',
     }
 
 def download(url, request_options):
     with youtube_dl.YoutubeDL(get_ydl_options(request_options)) as ydl:
         return ydl.extract_info(url, download=True)
 
-def zipEntries(entries, name):
+def zipEntries(entries, name, ext):
     file_paths = []
     for entry in entries:
-        file_paths.append(entry['id'] + '.' + ext)
+        file_paths.append(entry['title'] + ' ' + entry['id'] + '.' + ext)
 
     with ZipFile(name + '.zip','w') as zip:
         for file in file_paths:
