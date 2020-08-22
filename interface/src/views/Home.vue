@@ -13,10 +13,10 @@
         class="switch"
         v-model="format"
         active-text="Audio"
-        inactive-text="Video"
         active-value="audio"
-        inactive-value="video"
         active-color="red"
+        inactive-text="Video"
+        inactive-value="video"
         inactive-color="red"
         font-size="50px"
     />
@@ -49,7 +49,6 @@ export default {
   },
   computed: {
     ...mapState('youtube_dl', [
-      'download',
       'downloadLoading',
       'downloadSuccess',
       'downloadError'

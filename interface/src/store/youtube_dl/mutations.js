@@ -4,8 +4,7 @@ export default {
         state.downloadError = null
     },
 
-    downloadSuccess(state, download) {
-        state.download = download
+    downloadSuccess(state) {
         state.downloadLoading = false
         state.downloadSuccess = true
         state.downloadError = null

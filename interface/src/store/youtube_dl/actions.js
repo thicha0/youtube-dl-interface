@@ -22,7 +22,7 @@ export const downloadUrl = async (
         link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
-        commit('downloadSuccess', response.data.data)
+        commit('downloadSuccess')
     }).catch((error) => {
         commit('downloadError', error.data)
     });
