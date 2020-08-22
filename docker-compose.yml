@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 
 services:
 
@@ -14,12 +14,14 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - VUE_APP_API_URL=${VUE_APP_API_URL}
 
-  web:
+  server:
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    environment:
+      - VIDEO_QUALITY=${VIDEO_QUALITY}
     depends_on:
       - redis
   redis:
