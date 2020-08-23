@@ -1,5 +1,5 @@
 app_defaults = {
-    'OUTPUT': '/code/%(title)s.%(ext)s',
+    'OUTPUT': '/youtube_dl/downloads/%(title)s.%(ext)s',
     'VIDEO_QUALITY': 480,
 }
 
@@ -50,7 +50,7 @@ def call():
             return {"error": "An error has occurred during the zipping"}, 500
 
     try:
-        response = send_file('/code/' + filename + '.' + ext)
+        response = send_file('/youtube_dl/downloads/' + filename + '.' + ext)
     except Exception as e:
         print(e, flush=True)
         return {"error": "An error has occurred during the sending of the file"}, 500
@@ -97,9 +97,9 @@ def zipEntries(entries, name, ext):
     for entry in entries:
         file_paths.append(entry['title'].replace('/','_') + '.' + ext)
 
-    with ZipFile(name + '.zip','w') as zip:
+    with ZipFile('/youtube_dl/downloads/' + name + '.zip', 'w') as zip:
         for file in file_paths:
-            zip.write(file)
+            zip.write('/youtube_dl/downloads/' + file, file)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

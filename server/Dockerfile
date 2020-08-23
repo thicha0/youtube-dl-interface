@@ -4,8 +4,8 @@ RUN apk add --no-cache \
   ffmpeg \
   tzdata
 
-ADD . /code
-WORKDIR /code
+ADD . /youtube_dl
+WORKDIR /youtube_dl
 
 COPY requirements.txt /code
 RUN pip install --upgrade pip
