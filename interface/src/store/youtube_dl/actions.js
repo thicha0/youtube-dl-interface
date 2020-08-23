@@ -1,4 +1,5 @@
 import api from '@/service/api'
+import { Message } from 'element-ui'
 
 export const downloadUrl = async (
     { commit },
@@ -26,8 +27,17 @@ export const downloadUrl = async (
         document.body.appendChild(link);
         link.click();
         commit('downloadSuccess')
+        Message.success('Download completed !')
     }).catch((error) => {
-        commit('downloadError', error.data)
+        let errorMessage = 'An error has occurred.'
+        if (error.response.status === 400) {
+            commit('downloadError', error.response.data.error)
+        }
+        else if (error.response.status === 500) {
+            errorMessage = error.response.data.error
+            commit('downloadError', '')
+        }
+        Message.error(errorMessage)
     });
 }
 

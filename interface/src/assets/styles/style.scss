@@ -1,6 +1,6 @@
-@import "~element-ui/packages/theme-chalk/src/switch";
-@import "~element-ui/packages/theme-chalk/src/button";
-@import 'colors';
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+@import "~element-ui/packages/theme-chalk/src/index";
+@import 'variables';
 
 body {
   background-color: $background-color;
@@ -23,18 +23,18 @@ body {
 }
 
 .title {
-  font-family: "Segoe UI", sans-serif;
+  font-family: $fonts;
 }
 
 .input {
   margin: 1%;
-  max-width: 50%;
+  max-width: 80%;
   font-size: 1.5rem;
 }
 
 .switch {
   font-size: 10rem;
-  font-family: "Segoe UI", sans-serif;
+  font-family: $fonts;
   color: $primary-color;
   margin: 1%;
 }
@@ -66,4 +66,31 @@ body {
     background-color: $primary-color;
     border-color: $dark-color;
   }
+}
+
+.el-form {
+  width: 50%;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1%;
+}
+
+.el-form-item {
+  width: 100%;
+  text-align: center;
+}
+
+.el-form-item__error {
+  font-size: 1rem;
+  font-family: $fonts;
+  right: 0;
+  top: 100%;
+}
+
+.el-message__content {
+  font-size: 1rem;
+  font-family: $fonts;
 }

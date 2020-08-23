@@ -26,7 +26,10 @@ def call():
     }
 
     if not url:
-        return {"error": "No url provided"}, 400
+        return {"error": "No URL provided !"}, 400
+
+    if not validURL(url):
+        return {"error": "This URL is not valid !"}
 
     ext = 'mp4'
     if format == 'audio':
@@ -36,7 +39,7 @@ def call():
         result = download(url, options)
     except Exception as e:
         print(e, flush=True)
-        return {"error": "An error has occurred during the download"}, 500
+        return {"error": "An error has occurred during the download. Make sure that the URL provided is correct !"}, 500
 
     filename = result['title'].replace('/', '_')
     type = result.get('_type', 'video')
@@ -47,16 +50,22 @@ def call():
             ext = 'zip'
         except Exception as e:
             print(e, flush=True)
-            return {"error": "An error has occurred during the zipping"}, 500
+            return {"error": "An error has occurred during the zipping..."}, 500
 
     try:
         response = send_file('/youtube_dl/downloads/' + filename + '.' + ext)
     except Exception as e:
         print(e, flush=True)
-        return {"error": "An error has occurred during the sending of the file"}, 500
+        return {"error": "An error has occurred during the sending of the file..."}, 500
 
     response.headers['x-filename'] = (filename + '.' + ext).encode(encoding='UTF-8', errors='ignore')
     return response
+
+def validURL(url):
+    return url.startswith((
+        'https://www.youtube.com/watch?v=',
+        'https://www.youtube.com/playlist?list='
+    ))
 
 def get_ydl_options(options):
     format = options.get('format')
