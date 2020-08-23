@@ -1,5 +1,5 @@
 app_defaults = {
-    'OUTPUT': '/code/%(title)s %(id)s.%(ext)s',
+    'OUTPUT': '/code/%(title)s.%(ext)s',
     'VIDEO_QUALITY': 480,
 }
 
@@ -38,10 +38,8 @@ def call():
         print(e, flush=True)
         return {"error": "An error has occurred during the download"}, 500
 
-    title = result['title']
-    id = result['id']
+    filename = result['title'].replace('/', '_')
     type = result.get('_type', 'video')
-    filename = title + ' ' + id
 
     if type == 'playlist':
         try:
@@ -63,26 +61,27 @@ def call():
 def get_ydl_options(options):
     format = options.get('format')
 
-    if format == 'audio':
-        return {
-            'format': 'bestaudio/best',
+    options = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+    }
+
+    if format == 'video':
+        options = {
+            'format': 'bestvideo[height=%s]+bestaudio/best' % os.getenv('VIDEO_QUALITY', app_defaults['VIDEO_QUALITY']),
             'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-            'outtmpl': app_defaults['OUTPUT'],
-            'noplaylist' : True,
-            'encoding' : 'utf-8',
+                'key': 'FFmpegVideoConvertor',
+                'preferedformat': 'mp4',
+            }]
         }
 
-    #default = video format
     return {
-        'format': 'bestvideo[height=%s]+bestaudio/best' % os.getenv('VIDEO_QUALITY', app_defaults['VIDEO_QUALITY']),
-        'postprocessors': [{
-            'key': 'FFmpegVideoConvertor',
-            'preferedformat': 'mp4',
-        }],
+        'format': options['format'],
+        'postprocessors': options['postprocessors'],
         'outtmpl': app_defaults['OUTPUT'],
         'noplaylist' : True,
         'encoding' : 'utf-8',
@@ -94,8 +93,9 @@ def download(url, request_options):
 
 def zipEntries(entries, name, ext):
     file_paths = []
+    print("Starting zipping of entries", flush=True)
     for entry in entries:
-        file_paths.append(entry['title'] + ' ' + entry['id'] + '.' + ext)
+        file_paths.append(entry['title'].replace('/','_') + '.' + ext)
 
     with ZipFile(name + '.zip','w') as zip:
         for file in file_paths:
