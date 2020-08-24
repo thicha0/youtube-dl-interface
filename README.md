@@ -1,4 +1,6 @@
-![youtube-dl-interface logo](interface/src/assets/logo.png)
+<div style="text-align:center">
+    <img src="interface/src/assets/logo.png" alt="Logo" width="100">
+</div>
 # youtube-dl-interface
 
 The goal of this project is to offer an easy way to download youtube videos (mp3 for audio or mp4 for  video).
@@ -6,7 +8,7 @@ The goal of this project is to offer an easy way to download youtube videos (mp3
 It is based on youtube-dl so check it out !
 https://youtube-dl.org/
 
-##Features
+## Features
 - Download of single youtube video as video (mp4) or audio (mp3).
 
 *URL like https://www.youtube.com/watch?v=dQw4w9WgXcQ*
@@ -17,13 +19,13 @@ https://youtube-dl.org/
 
 - Support UTF-8 characters (hello K-pop fans)
 
-##Content
+## Content
 This project contains:
 - a [VueJS](https://vuejs.org/) application called interface which provides a web page
 - a [Flask](https://flask.palletsprojects.com/) application called server, this one is running the downloads
 - a [Docker](https://www.docker.com/) configuration for running both
 
-##Requirements
+## Requirements
 - Docker 1.13.0+
 - npm / yarn
 
@@ -44,11 +46,11 @@ You can choose the video quality of the downloads by setting the VIDEO_QUALITY v
 
 - Running the project: `docker-compose up`
 
-##Future possible features
+## Future possible features
 - Logger to follow the progress of the download (especially for playlists)
 - Detailed documentation for the code (particularly for the Flask application)
 
-##References
+## References
 - youtube-dl: 
 https://github.com/ytdl-org/youtube-dl
 
