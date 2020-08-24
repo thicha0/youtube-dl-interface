@@ -1,6 +1,7 @@
-<div style="text-align:center">
-    <img src="interface/src/assets/logo.png" alt="Logo" width="100">
-</div>
+<p align="center">
+    <img src="interface/src/assets/logo.png" alt="Logo" width="256">
+</p>
+
 # youtube-dl-interface
 
 The goal of this project is to offer an easy way to download youtube videos (mp3 for audio or mp4 for  video).
