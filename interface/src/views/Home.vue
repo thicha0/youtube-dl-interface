@@ -50,7 +50,6 @@ export default {
   computed: {
     ...mapState('youtube_dl', [
       'downloadLoading',
-      'downloadSuccess',
       'downloadError'
     ])
   },

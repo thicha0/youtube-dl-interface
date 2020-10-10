@@ -47,9 +47,17 @@ You can choose the video quality of the downloads by setting the VIDEO_QUALITY v
 
 - Running the project: `docker-compose up`
 
+- Go to `localhost:8080` on your browser and start downloading your favorites videos !
+
 ## Future possible features
 - Logger to follow the progress of the download (especially for playlists)
+- Add other pages to interface (About, etc.)
+- Add page with more options for the download (specific format, etc.)
+
+## Things to do
 - Detailed documentation for the code (particularly for the Flask application)
+- Documentation to launch unique containers (without Docker Compose)
+- Documentation to launch the project without Docker
 
 ## References
 - youtube-dl: 

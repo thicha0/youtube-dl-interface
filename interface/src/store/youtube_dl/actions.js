@@ -16,16 +16,7 @@ export const downloadUrl = async (
         },
         responseType: 'blob'
     }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        const filename = response.headers['x-filename']
-        link.setAttribute(
-            'download',
-            decodeURIComponent(escape(filename))
-        );
-        document.body.appendChild(link);
-        link.click();
+        downloadBlob(response.headers['x-filename'], response.data)
         commit('downloadSuccess')
         Message.success('Download completed !')
     }).catch((error) => {
@@ -39,6 +30,18 @@ export const downloadUrl = async (
         }
         Message.error(errorMessage)
     });
+}
+
+function downloadBlob(filename, data) {
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute(
+        'download',
+        decodeURIComponent(escape(filename))
+    );
+    document.body.appendChild(link);
+    link.click();
 }
 
 export default {
