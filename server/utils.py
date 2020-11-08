@@ -1,3 +1,13 @@
+app_defaults = {
+    'OUTPUT': '/youtube_dl/downloads/%(title)s.%(ext)s',
+    'VIDEO_QUALITY': 480,
+}
+
+import youtube_dl
+import os
+from collections import ChainMap
+from zipfile import ZipFile
+
 def validURL(url):
     return url.startswith((
         'https://www.youtube.com/watch?v=',
@@ -41,7 +51,8 @@ def zipEntries(entries, name, ext):
     file_paths = []
     print("Starting zipping of entries", flush=True)
     for entry in entries:
-        file_paths.append(entry['title'].replace('/','_') + '.' + ext)
+#        file_paths.append(entry['title'].replace('/','_') + '.' + ext)
+        file_paths.append(entry['title'].replace('/','_').replace('"', '\'') + '.' + ext)
 
     with ZipFile('/youtube_dl/downloads/' + name + '.zip', 'w') as zip:
         for file in file_paths:

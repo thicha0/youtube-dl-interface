@@ -1,17 +1,7 @@
-app_defaults = {
-    'OUTPUT': '/youtube_dl/downloads/%(title)s.%(ext)s',
-    'VIDEO_QUALITY': 480,
-}
-
-import youtube_dl
 from flask import Flask, request, send_file
 from flask_cors import CORS, cross_origin
 from redis import Redis
-from collections import ChainMap
-import os
-from zipfile import ZipFile
-from flask import abort
-from "utils.py" import validURL, download, zipEntries
+from utils import validURL, download, zipEntries
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/youtube_dl/*": {"origins": "*"}})
@@ -42,7 +32,7 @@ def call():
         print(e, flush=True)
         return {"error": "An error has occurred during the download. Make sure that the URL provided is correct !"}, 500
 
-    filename = result['title'].replace('/', '_')
+    filename = result['title'].replace('/', '_').replace('"', '\'')
     type = result.get('_type', 'video')
 
     if type == 'playlist':

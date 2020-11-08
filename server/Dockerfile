@@ -7,7 +7,7 @@ RUN apk add --no-cache \
 ADD . /youtube_dl
 WORKDIR /youtube_dl
 
-COPY requirements.txt /code
+COPY requirements.txt /youtube_dl
 RUN pip install --upgrade pip
 RUN pip install --upgrade -r requirements.txt
 
