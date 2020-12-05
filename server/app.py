@@ -20,7 +20,7 @@ def call():
         return {"error": "No URL provided !"}, 400
 
     if not validURL(url):
-        return {"error": "This URL is not valid !"}
+        return {"error": "This URL is not valid !"}, 400
 
     ext = 'mp4'
     if format == 'audio':

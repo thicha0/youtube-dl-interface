@@ -20,15 +20,13 @@ export const downloadUrl = async (
         commit('downloadSuccess')
         Message.success('Download completed !')
     }).catch((error) => {
-        let errorMessage = 'An error has occurred.'
         if (error.response.status === 400) {
             commit('downloadError', error.response.data.error)
         }
         else if (error.response.status === 500) {
-            errorMessage = error.response.data.error
             commit('downloadError', '')
+            Message.error(error.response.data.error || 'An error has occured')
         }
-        Message.error(errorMessage)
     });
 }
 
