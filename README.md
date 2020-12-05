@@ -56,8 +56,7 @@ You can choose the video quality of the downloads by setting the VIDEO_QUALITY v
 
 ## Things to do
 - Detailed documentation for the code (particularly for the Flask application)
-- Documentation to launch unique containers (without Docker Compose)
-- Documentation to launch the project without Docker
+- Enhance the interface
 
 ## References
 - youtube-dl: 
