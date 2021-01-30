@@ -55,7 +55,6 @@ You can choose the video quality of the downloads by setting the VIDEO_QUALITY v
 - Add page with more options for the download (specific format, etc.)
 
 ## Things to do
-- Detailed documentation for the code (particularly for the Flask application)
 - Enhance the interface
 
 ## References
