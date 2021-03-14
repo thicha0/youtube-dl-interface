@@ -14,6 +14,16 @@ def validURL(url):
         'https://www.youtube.com/playlist?list='
     ))
 
+def formatFilename(filename):
+    for ch in ['/', '"', "|"]:
+        filename = filename.replace(ch, '_')
+    for ch in [":", "..."]:
+        filename = filename.replace(ch, '')
+    for ch in ['.']:
+        if filename.startswith(ch):
+            filename = '_' + filename
+    return filename
+
 def getOptions(options):
     format = options.get('format')
 
@@ -40,6 +50,7 @@ def getOptions(options):
         'postprocessors': options['postprocessors'],
         'outtmpl': app_defaults['OUTPUT'],
         'noplaylist' : True,
+        'ignoreerrors' : True,
         'encoding' : 'utf-8',
     }
 
@@ -51,8 +62,11 @@ def zipEntries(entries, name, ext):
     file_paths = []
     print("Starting zipping of entries", flush=True)
     for entry in entries:
-#        file_paths.append(entry['title'].replace('/','_') + '.' + ext)
-        file_paths.append(entry['title'].replace('/','_').replace('"', '\'') + '.' + ext)
+        filename = formatFilename(entry['title'])
+        try:
+            file_paths.append(filename + '.' + ext)
+        except Exception as e:
+            print('File not found: ' + filename + '.' + ext)
 
     with ZipFile('/youtube_dl/downloads/' + name + '.zip', 'w') as zip:
         for file in file_paths:

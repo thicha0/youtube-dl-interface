@@ -1,7 +1,7 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS, cross_origin
 from redis import Redis
-from utils import validURL, download, zipEntries
+from utils import validURL, formatFilename, download, zipEntries
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/youtube_dl/*": {"origins": "*"}})
@@ -32,7 +32,7 @@ def call():
         print(e, flush=True)
         return {"error": "An error has occurred during the download. Make sure that the URL provided is correct !"}, 500
 
-    filename = result['title'].replace('/', '_').replace('"', '\'')
+    filename = formatFilename(result['title'])
     type = result.get('_type', 'video')
 
     if type == 'playlist':
