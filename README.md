@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="interface/src/assets/logo.png" alt="Logo" width="256" style="background-color: white; padding: 0 50px;">
+    <img src="interface/src/assets/logo.jpg" alt="Logo" width="256">
 </p>
 
 # youtube-dl-interface
