@@ -26,6 +26,11 @@ This project contains:
 - a [Flask](https://flask.palletsprojects.com/) application called server, this one is running the downloads
 - a [Docker](https://www.docker.com/) configuration for running both
 
+## Architecture
+<p >
+    <img src="interface/src/assets/folder-structure.png" alt="Logo" width="256">
+</p>
+
 ## Requirements
 - Docker 1.13.0+
 - npm / yarn
