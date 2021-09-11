@@ -61,6 +61,7 @@ You can choose the video quality of the downloads by setting the VIDEO_QUALITY v
 
 ## Things to do
 - Enhance the interface
+- Add different configuration for project with/without Docker
 
 ## References
 - youtube-dl: 
