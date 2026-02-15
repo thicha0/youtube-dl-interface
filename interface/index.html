@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <img src="assets/logo.png" alt="Logo" class="logo">
+        <h1>Download YouTube Videos</h1>
+
+        <div class="form">
+            <input
+                type="text"
+                id="urlInput"
+                placeholder="https://www.youtube.com/watch?v=..."
+                autocomplete="off"
+            >
+
+            <div class="format-toggle">
+                <button id="videoBtn" class="format-btn active">Video</button>
+                <button id="audioBtn" class="format-btn">Audio</button>
+            </div>
+
+            <button id="downloadBtn" class="download-btn">
+                <span id="btnText">Download</span>
+                <span id="spinner" class="spinner hidden"></span>
+            </button>
+
+            <p id="message" class="message"></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
