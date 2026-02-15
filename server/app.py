@@ -1,11 +1,9 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS, cross_origin
-from redis import Redis
 from utils import validURL, formatFilename, download, zipEntries
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/youtube_dl/*": {"origins": "*"}})
-redis = Redis(host='redis', port=6379)
 
 @app.route('/youtube_dl/q', methods = ['POST', 'OPTIONS'])
 @cross_origin(supports_credentials=True, expose_headers=["x-filename"])

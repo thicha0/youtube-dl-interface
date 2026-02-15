@@ -3,7 +3,7 @@ app_defaults = {
     'VIDEO_QUALITY': 480,
 }
 
-import youtube_dl
+import yt_dlp
 import os
 from collections import ChainMap
 from zipfile import ZipFile
@@ -55,7 +55,7 @@ def getOptions(options):
     }
 
 def download(url, request_options):
-    with youtube_dl.YoutubeDL(getOptions(request_options)) as ydl:
+    with yt_dlp.YoutubeDL(getOptions(request_options)) as ydl:
         return ydl.extract_info(url, download=True)
 
 def zipEntries(entries, name, ext):
